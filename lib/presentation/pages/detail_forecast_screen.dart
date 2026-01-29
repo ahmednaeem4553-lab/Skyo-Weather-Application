@@ -1,4 +1,3 @@
-// lib/presentation/screens/detail_forecast_screen.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,8 +11,7 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final model = controller.detail.value;
-      if (model == null)
-        return const Scaffold(body: Center(child: Text('No data')));
+      if (model == null) return const Scaffold(body: Center(child: Text('No data')));
 
       final bgColor = controller.getBackgroundColor();
       final textColor = controller.getTextColor();
@@ -22,100 +20,127 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
       return Scaffold(
         backgroundColor: bgColor,
         appBar: AppBar(
-          title: Text(
-            model.dayName,
-            style: GoogleFonts.inter(color: textColor),
-          ),
-          backgroundColor: Colors.transparent,
+          title: Text(model.dayName, style: GoogleFonts.inter(color: textColor)),
+          backgroundColor: bgColor.withOpacity(0.2),
           elevation: 0,
           iconTheme: IconThemeData(color: textColor),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            // padding: const EdgeInsets.all(24),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 5, 15, 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        '${model.maxTemp.toStringAsFixed(0)}° / ${model.minTemp.toStringAsFixed(0)}°',
-                        style: GoogleFonts.inter(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                          color: textColor,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Header: Main temp + condition + icon
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${model.maxTemp.toStringAsFixed(0)}° / ${model.minTemp.toStringAsFixed(0)}°',
+                          style: GoogleFonts.inter(
+                            fontSize: 48,
+                            fontWeight: FontWeight.w300,
+                            color: textColor,
+                          ),
                         ),
-                      ),
-                      buildWeatherIcon(model.condition, overrideSize: 70),
-                      // Image.asset(
-                      //   controller.getConditionIcon(),
-                      //   width: 40,
-                      //   height: 40,
-                      // ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    model.condition.toUpperCase(),
-                    style: GoogleFonts.inter(
-                      fontSize: 15,
-                      color: secondaryColor,
+                        Text(
+                          model.condition.toUpperCase(),
+                          style: GoogleFonts.inter(fontSize: 18, color: secondaryColor),
+                        ),
+                      ],
+                    ),
+                    buildWeatherIcon(model.condition, overrideSize: 60),
+                  ],
+                ),
+                const SizedBox(height: 32),
+
+                // Card 1: Temperature Breakdown
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  color: bgColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Temperature Breakdown',
+                          style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _TempTile('Morning', model.morningTemp, textColor, secondaryColor),
+                            _TempTile('Afternoon', model.afternoonTemp, textColor, secondaryColor),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _TempTile('Evening', model.eveningTemp, textColor, secondaryColor),
+                            _TempTile('Night', model.nightTemp, textColor, secondaryColor),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _TempTile('Min', model.minTemp, textColor, secondaryColor),
+                            _TempTile('Max', model.maxTemp, textColor, secondaryColor),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
+                ),
+                const SizedBox(height: 24),
 
-                  const SizedBox(height: 40),
-                  GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 24,
-                    children: [
-                      _DetailTile(
-                        'Morning',
-                        '${model.morningTemp.toStringAsFixed(0)}°',
-                        textColor,
-                        secondaryColor,
-                      ),
-                      _DetailTile(
-                        'Afternoon',
-                        '${model.afternoonTemp.toStringAsFixed(0)}°',
-                        textColor,
-                        secondaryColor,
-                      ),
-                      _DetailTile(
-                        'Evening',
-                        '${model.eveningTemp.toStringAsFixed(0)}°',
-                        textColor,
-                        secondaryColor,
-                      ),
-                      _DetailTile(
-                        'Night',
-                        '${model.nightTemp.toStringAsFixed(0)}°',
-                        textColor,
-                        secondaryColor,
-                      ),
-                      _DetailTile(
-                        'Feels Like',
-                        '${model.feelsLike.toStringAsFixed(0)}°',
-                        textColor,
-                        secondaryColor,
-                      ),
-                      _DetailTile(
-                        'Humidity',
-                        '${model.humidity}%',
-                        textColor,
-                        secondaryColor,
-                      ),
-                    ],
+                // Card 2: Other Weather Details
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  color: bgColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Weather Details',
+                          style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+                        ),
+                        const SizedBox(height: 16),
+                        GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisSpacing: 0,
+                          mainAxisSpacing: 0,
+                          children: [
+                            _DetailTile('Feels Like', '${model.feelsLike.toStringAsFixed(0)}°', textColor, secondaryColor),
+                            _DetailTile('Humidity', '${model.humidity}%', textColor, secondaryColor),
+                            _DetailTile('Wind', '${model.windSpeed.toStringAsFixed(1)} km/h', textColor, secondaryColor),
+                            _DetailTile('Pressure', '${model.pressure} hPa', textColor, secondaryColor),
+                            _DetailTile('Visibility', '${model.visibility.toStringAsFixed(1)} km', textColor, secondaryColor),
+                            _DetailTile('UV Index', model.uvIndex.toString(), textColor, secondaryColor),
+                            _DetailTile('Air Quality', '${model.airQuality} AQI', textColor, secondaryColor),
+                            _DetailTile('Chance of Rain', '${model.chanceOfRain}%', textColor, secondaryColor),
+                            _DetailTile('Dew Point', '${model.dewPoint.toStringAsFixed(0)}°', textColor, secondaryColor),
+                            _DetailTile('Sunrise', model.sunrise, textColor, secondaryColor),
+                            _DetailTile('Sunset', model.sunset, textColor, secondaryColor),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -123,23 +148,24 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
     });
   }
 
-  Widget _DetailTile(
-    String label,
-    String value,
-    Color primary,
-    Color secondary,
-  ) {
+  Widget _TempTile(String label, double temp, Color primary, Color secondary) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          value,
-          style: GoogleFonts.inter(
-            fontSize: 28,
-            fontWeight: FontWeight.w500,
-            color: primary,
-          ),
+          '${temp.toStringAsFixed(0)}°',
+          style: GoogleFonts.inter(fontSize: 32, fontWeight: FontWeight.w500, color: primary),
         ),
+        Text(label, style: GoogleFonts.inter(fontSize: 14, color: secondary)),
+      ],
+    );
+  }
+
+  Widget _DetailTile(String label, String value, Color primary, Color secondary) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(value, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w500, color: primary)),
         const SizedBox(height: 4),
         Text(label, style: GoogleFonts.inter(fontSize: 14, color: secondary)),
       ],

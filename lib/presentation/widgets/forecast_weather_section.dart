@@ -60,26 +60,33 @@ class ForecastSection extends GetView<ForecastController> {
                         SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
-                            final day = controller
-                                .days[index]; // this is ForecastDayModel
+                            final day = controller.days[index];
 
-                            // Convert to DetailForecastModel (fill missing fields with reasonable defaults or real data)
                             final detailData = DetailForecastModel(
                               dayName: day.dayName,
                               morningTemp:
                                   day.minTemp +
-                                  2, // example values – replace with real data if available
+                                  3, // ← replace with real API values
                               afternoonTemp: day.maxTemp - 1,
                               eveningTemp: day.minTemp + 1,
                               nightTemp: day.minTemp - 2,
                               minTemp: day.minTemp,
                               maxTemp: day.maxTemp,
-                              humidity:
-                                  65, // placeholder – use real API data later
+                              humidity: 70,
                               feelsLike: day.minTemp + 3,
                               condition: day.condition,
                               description: day.condition,
                               iconPath: day.iconPath,
+                              windSpeed: 12.5,
+                              windDirection: 'WSW',
+                              pressure: 1013,
+                              uvIndex: 6,
+                              airQuality: 45,
+                              visibility: 10.0,
+                              sunrise: '06:15 AM',
+                              sunset: '07:45 PM',
+                              dewPoint: 18.0,
+                              chanceOfRain: 20,
                             );
 
                             Get.toNamed(

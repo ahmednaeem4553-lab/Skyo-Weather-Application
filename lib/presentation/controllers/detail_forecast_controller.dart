@@ -11,21 +11,31 @@ class DetailForecastController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final arg =
-        Get.arguments as DetailForecastModel?; // ← expects DetailForecastModel
+    final arg = Get.arguments as DetailForecastModel?;
     if (arg != null) {
       detail.value = arg;
     } else {
-      Get.back();
+      Get.back(); // or handle error
     }
   }
 
-  // RxBool isbool = false.obs;
-  String getConditionIcon() =>
-      WeatherUtils.getConditionIconPath(detail.value?.condition);
-  Color getBackgroundColor() =>
-      WeatherUtils.getBackgroundColor(detail.value?.condition);
+  String getConditionIcon() => WeatherUtils.getConditionIconPath(detail.value?.condition);
+  Color getBackgroundColor() => WeatherUtils.getBackgroundColor(detail.value?.condition);
   Color getTextColor() => WeatherUtils.getTextColor(detail.value?.condition);
-  Color getSecondaryTextColor() =>
-      WeatherUtils.getSecondaryTextColor(detail.value?.condition);
+  Color getSecondaryTextColor() => WeatherUtils.getSecondaryTextColor(detail.value?.condition);
+
+  // Optional helpers for UI formatting
+  String getWindDisplay() {
+    final speed = detail.value?.windSpeed ?? 0;
+    final dir = detail.value?.windDirection ?? 'N/A';
+    return '${speed.toStringAsFixed(1)} km/h $dir';
+  }
+
+  String getAqiLabel() {
+    final aqi = detail.value?.airQuality ?? 0;
+    if (aqi <= 50) return 'Good';
+    if (aqi <= 100) return 'Moderate';
+    if (aqi <= 150) return 'Unhealthy for Sensitive Groups';
+    return 'Unhealthy';
+  }
 }
