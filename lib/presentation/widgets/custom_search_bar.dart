@@ -42,6 +42,8 @@ class CustomSearchBar extends GetView<CustomSearchBarController> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: TextField(
+                  
+                  cursorColor: Colors.black,
                   onTapOutside: (_) {FocusScope.of(context).unfocus(); },
                   onTap: controller.expand,
                   onChanged: controller.onQueryChanged,
@@ -53,13 +55,13 @@ class CustomSearchBar extends GetView<CustomSearchBarController> {
                     }
                   },
                   style: GoogleFonts.inter(color: textColor),
-                  decoration: InputDecoration(
+                  decoration: InputDecoration(                    
                     hintText: 'Search city...',
-                    hintStyle: GoogleFonts.inter(color: textColor.withOpacity(0.6)),
+                    hintStyle: GoogleFonts.inter(color: textColor.withOpacity(0.6), height: 2.0),
                     border: InputBorder.none,
                     prefixIcon: Icon(Icons.search_rounded, color: textColor),
                     suffixIcon: controller.currentQuery.value.isNotEmpty
-                        ? IconButton(
+                        ? IconButton( 
                             icon: Icon(Icons.clear, color: textColor),
                             onPressed: controller.clear,
                           )
@@ -72,7 +74,7 @@ class CustomSearchBar extends GetView<CustomSearchBarController> {
               if (controller.isExpanded.value)
                 Expanded(
                   child: controller.isLoading.value
-                      ? const Center(child: CircularProgressIndicator(strokeWidth: 2))
+                      ? const Center(child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black,))
                       : controller.suggestions.isEmpty
                           ? Center(
                               child: Text(

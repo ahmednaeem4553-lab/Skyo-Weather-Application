@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class WeatherUtils {
   /// Returns a single solid background color based on weather condition
   static Color getBackgroundColor(String? condition) {
-    if (condition == null) return Colors.yellow.shade700;
+    if (condition == null) return const Color.fromARGB(255, 255, 255, 255);
 
     final lower = condition.toLowerCase();
 
@@ -41,22 +41,22 @@ class WeatherUtils {
 
   /// Primary text/icon color with good contrast on the background
   static Color getTextColor(String? condition) {
-    if (condition == null) return Colors.white;
+    if (condition == null) return Colors.black;
 
     final lower = condition.toLowerCase();
 
     // Dark backgrounds → white text
     if (lower.contains('rain') ||
         lower.contains('drizzle') ||
-        lower.contains('thunderstorm')
-        ) {
+        lower.contains('thunderstorm')) {
       return Colors.white.withOpacity(0.95);
     }
 
     // Light/warm backgrounds → dark text
     if (lower.contains('clear') ||
         lower.contains('sunny') ||
-        lower.contains('snow') || lower.contains('clouds') ||
+        lower.contains('snow') ||
+        lower.contains('clouds') ||
         lower.contains('fog') ||
         lower.contains('mist') ||
         lower.contains('haze')) {
@@ -94,7 +94,9 @@ class WeatherUtils {
     if (lower.contains('snow')) {
       return 'assets/icons/Snow.png';
     }
-    if (lower.contains('fog') || lower.contains('mist') || lower.contains('haze')) {
+    if (lower.contains('fog') ||
+        lower.contains('mist') ||
+        lower.contains('haze')) {
       return 'assets/icons/Frame 1-6.png';
     }
 

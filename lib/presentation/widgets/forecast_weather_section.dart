@@ -44,7 +44,7 @@ class ForecastSection extends GetView<ForecastController> {
                   final day = controller.days[index];
                   return Container(
                     width: 80, // wider card for better readability & touch
-                    margin: const EdgeInsets.only(right: 12),
+                    // margin: const EdgeInsets.only(right: 2),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,

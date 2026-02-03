@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/Get.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart'; // ← add this import
 import 'package:skyo_app_new/core/errors/error_view.dart';
 import 'package:skyo_app_new/core/utils/weather_utils.dart';
 import 'package:skyo_app_new/presentation/controllers/search_bar_controller.dart';
@@ -59,10 +60,162 @@ class HomeScreen extends GetView<HomeController> {
 
                     Expanded(
                       child: controller.isLoading.value
-                          ? Center(
-                              child: CircularProgressIndicator(
-                                color: textColor,
-                                strokeWidth: 3,
+                          ? Shimmer.fromColors(
+                              baseColor: Color(0xff333333),
+                              highlightColor: Color(0xff666666),
+                              child: SingleChildScrollView(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 24,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 30),
+
+                                      // Temperature placeholder
+                                      Container(
+                                        height: 140,
+                                        width: 200,
+
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 20),
+
+                                      // Updated text placeholder
+                                      Container(
+                                        height: 20,
+                                        width: 150,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 20),
+
+                                      // Location + icon placeholder
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            height: 30,
+                                            width: 30,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Container(
+                                            height: 40,
+                                            width: 180,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 16),
+
+                                      // Description placeholder
+                                      Container(
+                                        height: 24,
+                                        width: 140,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+
+                                      const SizedBox(height: 50),
+
+                                      // Details row placeholder
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Container(
+                                                height: 40,
+                                                width: 80,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Container(
+                                                height: 20,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Container(
+                                                height: 40,
+                                                width: 80,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Container(
+                                                height: 20,
+                                                width: 100,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 40),
+
+                                      // Big image placeholder
+                                      Container(
+                                        height: 300,
+                                        width: 300,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      SizedBox(height: 40),
+                                    ],
+                                  ),
+                                ),
                               ),
                             )
                           : controller.errorMessage.isNotEmpty

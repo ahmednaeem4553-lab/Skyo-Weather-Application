@@ -11,7 +11,8 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final model = controller.detail.value;
-      if (model == null) return const Scaffold(body: Center(child: Text('No data')));
+      if (model == null)
+        return const Scaffold(body: Center(child: Text('No data')));
 
       final bgColor = controller.getBackgroundColor();
       final textColor = controller.getTextColor();
@@ -20,7 +21,10 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
       return Scaffold(
         backgroundColor: bgColor,
         appBar: AppBar(
-          title: Text(model.dayName, style: GoogleFonts.inter(color: textColor)),
+          title: Text(
+            model.dayName,
+            style: GoogleFonts.inter(color: textColor),
+          ),
           backgroundColor: bgColor.withOpacity(0.2),
           elevation: 0,
           iconTheme: IconThemeData(color: textColor),
@@ -39,16 +43,19 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${model.maxTemp.toStringAsFixed(0)}° / ${model.minTemp.toStringAsFixed(0)}°',
+                          'Min Temp: ${model.maxTemp.toStringAsFixed(0)}°\nMax Temp: ${model.minTemp.toStringAsFixed(0)}°',
                           style: GoogleFonts.inter(
-                            fontSize: 48,
-                            fontWeight: FontWeight.w300,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w500,
                             color: textColor,
                           ),
                         ),
                         Text(
                           model.condition.toUpperCase(),
-                          style: GoogleFonts.inter(fontSize: 18, color: secondaryColor),
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            color: secondaryColor,
+                          ),
                         ),
                       ],
                     ),
@@ -60,7 +67,9 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
                 // Card 1: Temperature Breakdown
                 Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   color: bgColor,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
@@ -69,30 +78,64 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
                       children: [
                         Text(
                           'Temperature Breakdown',
-                          style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: textColor,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _TempTile('Morning', model.morningTemp, textColor, secondaryColor),
-                            _TempTile('Afternoon', model.afternoonTemp, textColor, secondaryColor),
+                            _TempTile(
+                              'Morning',
+                              model.morningTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _TempTile(
+                              'Afternoon',
+                              model.afternoonTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
                           ],
                         ),
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _TempTile('Evening', model.eveningTemp, textColor, secondaryColor),
-                            _TempTile('Night', model.nightTemp, textColor, secondaryColor),
+                            _TempTile(
+                              'Evening',
+                              model.eveningTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _TempTile(
+                              'Night',
+                              model.nightTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
                           ],
                         ),
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _TempTile('Min', model.minTemp, textColor, secondaryColor),
-                            _TempTile('Max', model.maxTemp, textColor, secondaryColor),
+                            _TempTile(
+                              'Min',
+                              model.minTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _TempTile(
+                              'Max',
+                              model.maxTemp,
+                              textColor,
+                              secondaryColor,
+                            ),
                           ],
                         ),
                       ],
@@ -104,7 +147,9 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
                 // Card 2: Other Weather Details
                 Card(
                   elevation: 4,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   color: bgColor,
                   child: Padding(
                     padding: const EdgeInsets.all(20),
@@ -113,27 +158,88 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
                       children: [
                         Text(
                           'Weather Details',
-                          style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: textColor),
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: textColor,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         GridView.count(
+                          padding: EdgeInsets.zero,
                           crossAxisCount: 2,
+                          childAspectRatio: 1.8,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           crossAxisSpacing: 0,
                           mainAxisSpacing: 0,
                           children: [
-                            _DetailTile('Feels Like', '${model.feelsLike.toStringAsFixed(0)}°', textColor, secondaryColor),
-                            _DetailTile('Humidity', '${model.humidity}%', textColor, secondaryColor),
-                            _DetailTile('Wind', '${model.windSpeed.toStringAsFixed(1)} km/h', textColor, secondaryColor),
-                            _DetailTile('Pressure', '${model.pressure} hPa', textColor, secondaryColor),
-                            _DetailTile('Visibility', '${model.visibility.toStringAsFixed(1)} km', textColor, secondaryColor),
-                            _DetailTile('UV Index', model.uvIndex.toString(), textColor, secondaryColor),
-                            _DetailTile('Air Quality', '${model.airQuality} AQI', textColor, secondaryColor),
-                            _DetailTile('Chance of Rain', '${model.chanceOfRain}%', textColor, secondaryColor),
-                            _DetailTile('Dew Point', '${model.dewPoint.toStringAsFixed(0)}°', textColor, secondaryColor),
-                            _DetailTile('Sunrise', model.sunrise, textColor, secondaryColor),
-                            _DetailTile('Sunset', model.sunset, textColor, secondaryColor),
+                            _DetailTile(
+                              'Feels Like',
+                              '${model.feelsLike.toStringAsFixed(0)}°',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Humidity',
+                              '${model.humidity}%',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Wind',
+                              '${model.windSpeed.toStringAsFixed(1)} km/h',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Pressure',
+                              '${model.pressure} hPa',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Visibility',
+                              '${model.visibility.toStringAsFixed(1)} km',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'UV Index',
+                              model.uvIndex.toString(),
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Air Quality',
+                              '${model.airQuality} AQI',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Chance of Rain',
+                              '${model.chanceOfRain}%',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Dew Point',
+                              '${model.dewPoint.toStringAsFixed(0)}°',
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Sunrise',
+                              model.sunrise,
+                              textColor,
+                              secondaryColor,
+                            ),
+                            _DetailTile(
+                              'Sunset',
+                              model.sunset,
+                              textColor,
+                              secondaryColor,
+                            ),
                           ],
                         ),
                       ],
@@ -153,19 +259,35 @@ class DetailForecastScreen extends GetView<DetailForecastController> {
       children: [
         Text(
           '${temp.toStringAsFixed(0)}°',
-          style: GoogleFonts.inter(fontSize: 32, fontWeight: FontWeight.w500, color: primary),
+          style: GoogleFonts.inter(
+            fontSize: 32,
+            fontWeight: FontWeight.w500,
+            color: primary,
+          ),
         ),
         Text(label, style: GoogleFonts.inter(fontSize: 14, color: secondary)),
       ],
     );
   }
 
-  Widget _DetailTile(String label, String value, Color primary, Color secondary) {
+  Widget _DetailTile(
+    String label,
+    String value,
+    Color primary,
+    Color secondary,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(value, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w500, color: primary)),
+        Text(
+          value,
+          style: GoogleFonts.inter(
+            fontSize: 24,
+            fontWeight: FontWeight.w500,
+            color: primary,
+          ),
+        ),
         const SizedBox(height: 4),
         Text(label, style: GoogleFonts.inter(fontSize: 14, color: secondary)),
       ],
